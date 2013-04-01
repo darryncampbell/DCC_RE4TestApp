@@ -1,0 +1,87 @@
+<script type="text/javascript" charset="utf-8" src="/public/js/application.js"></script>
+<script src="/public/jquery/jquery-1.6.4.min.js" type="text/javascript"></script>
+<script>
+function connectionEvent1(theText, theFailure)
+{
+	output1.innerHTML = "1" + theText;
+	output2.innerHTML = "1" + theFailure;
+}
+function connectionEvent2(theText, theFailure)
+{
+	output1.innerHTML = "2" + theText;
+	output2.innerHTML = "2" + theFailure;
+}
+function connectionEvent3(theText, theFailure)
+{
+	output1.innerHTML = "3" + theText;
+	output2.innerHTML = "3" + theFailure;
+}
+function wanEvent(phoneSignalStrength, networkOperator, connectionTypeAvailable, connectionTypeConnected, connectionManagerMessage)
+{
+	var out = ""
+	out = out + "Phone Signal: " + phoneSignalStrength + "<br>";
+	out = out + "Network Operator: " + networkOperator + "<br>";
+	out = out + "Connection Type Available: " + connectionTypeAvailable + "<br>";
+	out = out + "Connection Type Connected: " + connectionTypeConnected + "<br>";
+	out = out + "Connection Manager Message: " + connectionManagerMessage + "";
+	output3.innerHTML = out;
+}
+function givePort()
+{
+	return document.getElementById("portNumber").value;
+}
+function giveHost()
+{
+	return document.getElementById("theHost").value;
+}
+function doAJAX(rubyFunc)
+{
+	var thePort = givePort();
+	$.get(rubyFunc, {port:thePort, dccParams:{}})
+}
+function doAJAXWM(rubyFunc)
+{
+	var thePort = givePort();
+	var theHost = giveHost();
+	$.get(rubyFunc, {port:thePort, host:theHost, dccParams:{}})
+}
+function doAJAXWAN(rubyFunc)
+{
+	$.get(rubyFunc, {connectionDestination:'Internet', dccParams:{}})
+}
+</script>
+<div data-role="page">
+
+  <div data-role="header" data-position="inline">
+    <h1>Network Extension Test</h1>
+    <a href="<%= Rho::RhoConfig.start_path %>" class="ui-btn-left" data-icon="home" data-direction="reverse"
+       <%= "data-ajax='false'" if is_bb6 %>>Home</a>
+      
+  </div>
+	<div id='output1'>Connection Status Goes Here</div>
+	<div id='output2'>Connection Error Messages go here</div>
+	<div id='output3'>WAN Messages go here</div>
+	Host: <input type='text' size='25' id='theHost' value='http://www.google.co.uk'/>
+	Port: <input type='text' size='8' id='portNumber' value='80'/>
+  <div data-role="content">
+    <ul data-role="listview">
+		<!--a href="javascript:doAJAX('/app/NetworkTest/connection_test1')">Run Network Test 1</a><br>
+		<a href="javascript:doAJAX('/app/NetworkTest/connection_test2')">** Run Network Test 2 **</a><br>
+		<a href="scanner_ajax.htm">Don't Click</a><br-->
+		<b>Windows Mobile</b><br>
+		<a href="javascript:doAJAXWM('/app/NetworkTest/wm_connection_test1')">Detect Host on Port (CB1)</a><br>
+		<a href="javascript:doAJAX('/app/NetworkTest/connection_test_stop1')">Stop Detecting Network (CB1)</a><br>
+		<a href="javascript:doAJAXWM('/app/NetworkTest/wm_connection_test2')">Detect Host on Port (CB2)</a><br>
+		<a href="javascript:doAJAX('/app/NetworkTest/connection_test_stop2')">Stop Detecting Network (CB2)</a><br>
+		<a href="javascript:doAJAXWM('/app/NetworkTest/wm_connection_test3')">Detect Host on Port (CB3)</a><br>
+		<a href="javascript:doAJAX('/app/NetworkTest/connection_test_stop3')">Stop Detecting Network (CB3)</a><br>
+		<a href="javascript:doAJAXWM('/app/NetworkTest/http_post_test_2')">HTTP Post with Start Server</a><br>
+		<a href="javascript:doAJAXWM('/app/NetworkTest/http_post_test_1')">HTTP Post with Stop Server</a><br>
+		<b>WAN Tests</b><br>
+		<a href="javascript:doAJAXWAN('/app/NetworkTest/connectWAN')">Connect to WAN</a><br>
+		<a href="javascript:doAJAXWAN('/app/NetworkTest/disconnectWAN')">Disconnect from WAN</a><br>
+	</ul>
+  </div>
+
+</div>
+

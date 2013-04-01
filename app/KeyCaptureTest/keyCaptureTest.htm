@@ -1,0 +1,167 @@
+<HTML>
+<head>
+<script type="text/javascript" charset="utf-8" src="/public/js/application.js"></script>
+<script src="/public/jquery/jquery-1.6.4.min.js" type="text/javascript"></script>
+<!--  DCC JS Scripts required -->
+<!--script src="/public/api/generated/rhoapi.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8" src="/public/api/generated/rhoapi-modules.js"></script>
+<script src="/public/jquery/jquery.json-2.3.min.js" type="text/javascript"></script-->
+<!--  I'm sure there is an easier way to do this automatically! -->
+<!--script src="/public/api/generated/Rho.Signal.js" type="text/javascript"></script-->
+
+<script>
+var g_bDispatchKey = false;
+
+document.onkeydown=DOMoutputDown;
+document.onkeypress=DOMoutputPress;
+document.onkeyup=DOMoutputUp;
+function DOMoutputDown(theKey) 
+{
+    k = window.event.keyCode;
+	var spanElement;
+	spanElement = document.getElementById("domKeyState");
+	spanElement.innerText = "" + k;
+}
+function DOMoutputPress(theKey) 
+{
+	k = window.event.keyCode;
+	var spanElement;
+	spanElement = document.getElementById("domKeyStatePress");
+	spanElement.innerText = "" + k;
+}
+
+function DOMoutputUp(theKey)
+{
+	k = window.event.keyCode;
+	var spanElement;
+	spanElement = document.getElementById("domKeyStateUp");
+	spanElement.innerText = "" + k;
+}
+
+function outputToPage(theOutput, theText)
+{
+	//output1.innerHTML = "" + theText;
+	document.getElementById(theOutput).innerHTML=theText;
+}
+
+function setCapture(keyToCapture, dispatchTheKey, theID)
+{
+	//  TheID is associated with a key, enabling us to determine the callback to use in the Ruby
+	//  and subsequent div to output to.
+	var rubyFunc = "/app/KeyCaptureTest/capture_key";
+	
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    rubyFunc,
+		 data: {theCapturedKey:keyToCapture, id:theID, dispatchKey:dispatchTheKey},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	return returnedValue;
+}
+
+function unsetCapture(keyToCapture, theID)
+{
+	//  ID and captured key must match that value set in setCapture
+	var rubyFunc = "/app/KeyCaptureTest/uncapture_key";
+	
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    rubyFunc,
+		 data: {theCapturedKey:keyToCapture,id:theID},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	return returnedValue;
+}
+
+function triggerCB(rubyFunc)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    rubyFunc,
+		 data: {},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	return returnedValue;
+}
+
+function setHome(keyValue)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    "/app/KeyCaptureTest/setHome",
+		 data: {theKey:keyValue},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	return returnedValue;
+}
+
+function remapKeys(keyFrom, keyTo)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    "/app/KeyCaptureTest/remapKeys",
+		 data: {srcKey:keyFrom,destKey:keyTo},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	return returnedValue;
+}
+
+function setDispatch(bChecked)
+{
+	g_bDispatchKey = bChecked;
+}
+
+</SCRIPT>
+</head>
+<body>
+
+<H1>Key Capture Tests</H1>
+<INPUT TYPE="button" VALUE="Capture All Keys" ONCLICK="setCapture('all', g_bDispatchKey, 0);">
+<INPUT TYPE="button" VALUE="!Capture All Keys" ONCLICK="unsetCapture('all', 0);"><br>
+<INPUT TYPE="button" VALUE="Capture 'A'" ONCLICK="setCapture(0x41, g_bDispatchKey, 1);">
+<INPUT TYPE="button" VALUE="!Capture 'A'" ONCLICK="unsetCapture(0x41, 1);"><br>
+<INPUT TYPE="button" VALUE="Capture '1'" ONCLICK="setCapture('0x31', g_bDispatchKey, 2);">
+<INPUT TYPE="button" VALUE="!Capture '1'" ONCLICK="unsetCapture('0x31', 2);"><br>
+<INPUT TYPE="button" VALUE="Capture 'Q'" ONCLICK="setCapture(81, g_bDispatchKey, 3);">
+<INPUT TYPE="button" VALUE="!Capture 'Q'" ONCLICK="unsetCapture(81, 3);"><br>
+<INPUT TYPE="button" VALUE="Trigger Set" ONCLICK="triggerCB('/app/KeyCaptureTest/set_trigger')">
+<INPUT TYPE="button" VALUE="Trigger Clear" ONCLICK="triggerCB('/app/KeyCaptureTest/unset_trigger')"><br>
+<INPUT TYPE="button" VALUE="Set Home Key (R)" ONCLICK="setHome('82');">
+<INPUT TYPE="button" VALUE="Set Home Key (Disabled)" ONCLICK="setHome('disabled');"><br>
+<INPUT TYPE="button" VALUE="Remap '2' to '3'" ONCLICK="remapKeys('0x32', 0x33);">
+<INPUT TYPE="button" VALUE="Remap 'S' to 'T'" ONCLICK="remapKeys(83, 84);"><br>
+<form id='theForm'>
+<input type="checkbox" name="cb_dispatchKey" onclick="setDispatch(theForm.cb_dispatchKey.checked);"> Dispatch Key</input><br>
+</form>
+Messages: <div id='messages' style="display:inline">Messages go here</div><br>
+OnKey'A': <div id='keyStateA' style="display:inline">Not Captured</div><br>
+OnKey'1': <div id='keyStateOne' style="display:inline">Not Captured</div><br>
+OnKey'Q': <div id='keyStateQ' style="display:inline">Not Captured</div><br>
+OnAllKeys: <div id='keyStateAll' style="display:inline">Not Captured</div><br>
+Trigger: <div id='triggerState' style="display:inline">Not Captured</div><br>
+ JS DOM Key Down: <span id=domKeyState></span><br>
+ JS DOM Key Press: <span id=domKeyStatePress></span><br>
+ JS DOM Key Up: <span id=domKeyStateUp></span>
+<form name="input" method="post">
+Box 1: <input type="text" name="user1" value="Box 1 Contents (1)"><br>
+</form>
+<br>
+<a href="javascript:location.reload();">Refresh the page</a> 	
+	
+</body>
+</html>

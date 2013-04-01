@@ -1,0 +1,228 @@
+<HTML>
+<head>
+<script type="text/javascript" charset="utf-8" src="/public/js/application.js"></script>
+<script src="/public/jquery/jquery-1.6.4.min.js" type="text/javascript"></script>
+<!--  DCC JS Scripts required -->
+<!--script src="/public/api/generated/rhoapi.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8" src="/public/api/generated/rhoapi-modules.js"></script>
+<script src="/public/jquery/jquery.json-2.3.min.js" type="text/javascript"></script-->
+<!--  I'm sure there is an easier way to do this automatically! -->
+<!--script src="/public/api/generated/Rho.Signal.js" type="text/javascript"></script-->
+
+<script>
+function outputToPage(theOutput, theText)
+{
+	//output1.innerHTML = "" + theText;
+	document.getElementById(theOutput).innerHTML=theText;
+}
+function doAJAX(rubyFunc)
+{
+	$.get(rubyFunc, {dccParams:{}})
+}
+
+function doAJAXReg(rubyFunc, hive, type, subkey, setting, value, persistent)
+{
+	$.get(rubyFunc, {regHive:hive, regType:type, regSubkey:subkey, regSetting:setting, regValue:value, regPersistent:persistent});
+	output2.innerHTML = "Function: " + rubyFunc + " Subkey: " + subkey + " Setting: " + setting;
+}
+	
+
+function getRegistrySync(hive, subkey, setting)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    '/app/SystemTest/get_registry_sync',
+		 data: {regHive:hive,regSubkey:subkey,regSetting:setting},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	//outputToPage(returnedValue);
+	return returnedValue;
+}
+
+function setRegistrySync(hive, type, subkey, setting, value, persistent)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    '/app/SystemTest/set_registry_sync',
+		 data: {regHive:hive,regType:type,regSubkey:subkey,regSetting:setting,regValue:value,regPersistent:persistent},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	//alert(returnedValue);
+	return returnedValue;
+}
+
+function deleteRegistrySync(hive, subkey, setting, persistent)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    '/app/SystemTest/delete_registry_sync',
+		 data: {regHive:hive,regSubkey:subkey,regSetting:setting,regPersistent:persistent},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	//outputToPage(returnedValue);
+	return returnedValue;
+}
+
+function showIcon(rubyFunc, left, top, layout, colour)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    rubyFunc,
+		 data: {iconLeft:left,iconTop:top, iconLayout:layout, iconColour:colour},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	return returnedValue;
+}
+
+function hideIcon(rubyFunc)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    rubyFunc,
+		 data: {},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	return returnedValue;
+}
+
+function registerCallback(rubyFunc, trigger, refreshInterval)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    rubyFunc,
+		 data: {theTrigger:trigger,theRefreshInterval:refreshInterval},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	outputToPage('syncCB', 'Synchronous Return (ignore if not applicable): >> ' + returnedValue + ' <<');
+	return returnedValue;
+}
+
+function changeRefresh(rubyFunc, milliseconds)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    rubyFunc,
+		 data: {refreshMilliseconds:milliseconds},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	return returnedValue;
+}
+
+function smartBattery(rubyFunc)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    rubyFunc,
+		 data: {},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	outputToPage('batteryOutput', 'Smart Battery: ' + returnedValue);
+	return returnedValue;
+}
+
+function keyState(rubyFunc, theRight, theTop, theWidth, theHeight)
+{
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    rubyFunc,
+		 data: {iconRight:theRight,iconTop:theTop,iconWidth:theWidth,iconHeight:theHeight},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	return returnedValue;
+}
+
+function signalCallback(jsonObject)
+{
+	alert(jsonObject);
+}
+
+function runSignalCallback()
+{
+	var myValues = Rho.Signal.wlanStatus();
+	//Rho.Signal.wlanStatus(signalCallback);
+	alert(myValues);
+	//Rho.Signal.refreshInterval=5000;
+	//alert(Rho.Signal.refreshInterval);
+	//Rho.Signal.showIcon({top:50}, function(){});
+}
+
+
+
+
+</SCRIPT>
+</head>
+<body>
+<div data-role="page">
+
+  <h1>Indicators Test Page</h1>
+	<P>
+	<div id='signalOutput'>Signal Output Goes Here</div>
+	<div id='batteryOutput'>Battery Output Goes Here</div>
+	<div id='syncCB'>Synchronous Returns Goes Here</div>
+	<P>
+	<H2>KeyState (Ruby Access)</H2>
+	<P>
+	<a href="javascript:keyState('/app/IndicatorsTest/show_keystate_defaults')">Show KeyState (defaults)</a><br>
+	<a href="javascript:keyState('/app/IndicatorsTest/show_keystate_values', 200, 150, 50, 50)">Show KeyState (some values)</a><br>
+	<a href="javascript:keyState('/app/IndicatorsTest/hide_keystate')">Hide KeyState</a><br>
+	<P>	
+	<H2>Signal (JS Access)</H2>
+	<a href="javascript:runSignalCallback()">Register Signal Callback (Async)</a><br>
+	<P>
+	<H2>Signal (Ruby Access)</H2>
+	<a href="javascript:registerCallback('/app/IndicatorsTest/register_signal_callback')">Register Signal Callback (Async)</a><br>
+	<a href="javascript:registerCallback('/app/IndicatorsTest/signal_synchronous')">Register Signal Callback (Sync)</a><br>
+	<a href="javascript:registerCallback('/app/IndicatorsTest/deregister_signal_callback')">Stop Signal Callback</a><br>
+	<a href="javascript:showIcon('/app/IndicatorsTest/show_signal_icon', 10, 50, 'left', '#FF0000')">Show Signal Icon (Red, Left)</a><br>
+	<a href="javascript:showIcon('/app/IndicatorsTest/show_signal_icon', 20, 60, 'right', '#0000FF')">Show Signal Icon (Blue, Right)</a><br>
+	<a href="javascript:showIcon('/app/IndicatorsTest/show_signal_icon', 30, 70, 'up', '#00FF00')">Show Signal Icon (Green, Up)</a><br>
+	<a href="javascript:showIcon('/app/IndicatorsTest/show_signal_icon', 40, 80, 'down', '#000000')">Show Signal Icon (Black, Down)</a><br>
+	<a href="javascript:hideIcon('/app/IndicatorsTest/hide_signal_icon')">Hide Signal Icon</a><br>
+	<a href="javascript:changeRefresh('/app/IndicatorsTest/change_signal_refresh', 2000)">Signal Refresh Interval 2 seconds</a><br>
+	<a href="javascript:changeRefresh('/app/IndicatorsTest/change_signal_refresh', 10000)">Signal Refresh Interval 10 seconds</a><br>
+	<H2>Battery (Ruby Access)</H2>
+	<a href="javascript:registerCallback('/app/IndicatorsTest/register_battery_callback', 'periodic', '5000')">Register Battery Callback (Async, Periodic)</a><br>
+	<a href="javascript:registerCallback('/app/IndicatorsTest/register_battery_callback', 'system', '')">Register Battery Callback (Async, System Events)</a><br>
+	<a href="javascript:registerCallback('/app/IndicatorsTest/battery_synchronous')">Register Battery Callback (Sync)</a><br>
+	<a href="javascript:registerCallback('/app/IndicatorsTest/deregister_battery_callback')">Stop Battery Callback</a><br>
+	<a href="javascript:showIcon('/app/IndicatorsTest/show_battery_icon', 50, 50, 'left', '#FF0000')">Show Battery Icon (Red, Left)</a><br>
+	<a href="javascript:showIcon('/app/IndicatorsTest/show_battery_icon', 60, 60, 'right', '#0000FF')">Show Battery Icon (Blue, Right)</a><br>
+	<a href="javascript:showIcon('/app/IndicatorsTest/show_battery_icon', 70, 70, 'up', '#00FF00')">Show Battery Icon (Green, Up)</a><br>
+	<a href="javascript:showIcon('/app/IndicatorsTest/show_battery_icon', 80, 80, 'down', '#000000')">Show Battery Icon (Black, Down)</a><br>
+	<a href="javascript:hideIcon('/app/IndicatorsTest/hide_battery_icon')">Hide Battery Icon</a><br>
+	<a href="javascript:changeRefresh('/app/IndicatorsTest/change_battery_refresh', 2000)">Battery Refresh Interval 2 seconds</a><br>
+	<a href="javascript:changeRefresh('/app/IndicatorsTest/change_battery_refresh', 10000)">Battery Refresh Interval 10 seconds</a><br>
+	<a href="javascript:smartBattery('/app/IndicatorsTest/get_smartbattery', 10000)">Get SmartBattery</a><br>
+	<P>
+		
+
+</div>
+</body>
+</html>
