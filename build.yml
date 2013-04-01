@@ -30,7 +30,10 @@ symbian:
   uid: '0xe1a1ef92'
 android:
   version: 2.1
-
+wm:
+#sdk: "MC3000c50b (ARMV4I)"   
+  sdk: "Windows Mobile 6.5.3 Professional DTK (ARMV4I)"
+  
 extensions: ["json", "barcode", "coreapi", "indicators", "hardware_keys"]
 #extensions: ["json"]
 capabilities:
