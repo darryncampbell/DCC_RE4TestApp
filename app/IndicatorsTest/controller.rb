@@ -112,7 +112,7 @@ class IndicatorsTestController < Rho::RhoController
   
   def battery_synchronous
 	puts "Battery Syncronously"
-	batteryValue = Rho::Battery.batteryStatus
+	batteryValue = Rho::Battery.batteryStatus({})
 	puts "next is Battery Value"
 	puts batteryValue
 	returnValue = batteryValue['batteryLifePercent']
