@@ -189,37 +189,37 @@ function runSignalCallback()
 	<P>
 	<H2>KeyState (Ruby Access)</H2>
 	<P>
-	<a href="javascript:keyState('/app/IndicatorsTest/show_keystate_defaults')">Show KeyState (defaults)</a><br>
-	<a href="javascript:keyState('/app/IndicatorsTest/show_keystate_values', 200, 150, 50, 50)">Show KeyState (some values)</a><br>
-	<a href="javascript:keyState('/app/IndicatorsTest/hide_keystate')">Hide KeyState</a><br>
+	<a href="#" onclick="keyState('/app/IndicatorsTest/show_keystate_defaults')">Show KeyState (defaults)</a><br>
+	<a href="#" onclick="keyState('/app/IndicatorsTest/show_keystate_values', 200, 150, 50, 50)">Show KeyState (some values)</a><br>
+	<a href="#" onclick="keyState('/app/IndicatorsTest/hide_keystate')">Hide KeyState</a><br>
 	<P>	
 	<H2>Signal (JS Access)</H2>
-	<a href="javascript:runSignalCallback()">Register Signal Callback (Async)</a><br>
+	<a href="#" onclick="runSignalCallback()">Register Signal Callback (Async)</a><br>
 	<P>
 	<H2>Signal (Ruby Access)</H2>
-	<a href="javascript:registerCallback('/app/IndicatorsTest/register_signal_callback')">Register Signal Callback (Async)</a><br>
-	<a href="javascript:registerCallback('/app/IndicatorsTest/signal_synchronous')">Register Signal Callback (Sync)</a><br>
-	<a href="javascript:registerCallback('/app/IndicatorsTest/deregister_signal_callback')">Stop Signal Callback</a><br>
-	<a href="javascript:showIcon('/app/IndicatorsTest/show_signal_icon', 10, 50, 'left', '#FF0000')">Show Signal Icon (Red, Left)</a><br>
-	<a href="javascript:showIcon('/app/IndicatorsTest/show_signal_icon', 20, 60, 'right', '#0000FF')">Show Signal Icon (Blue, Right)</a><br>
-	<a href="javascript:showIcon('/app/IndicatorsTest/show_signal_icon', 30, 70, 'up', '#00FF00')">Show Signal Icon (Green, Up)</a><br>
-	<a href="javascript:showIcon('/app/IndicatorsTest/show_signal_icon', 40, 80, 'down', '#000000')">Show Signal Icon (Black, Down)</a><br>
-	<a href="javascript:hideIcon('/app/IndicatorsTest/hide_signal_icon')">Hide Signal Icon</a><br>
-	<a href="javascript:changeRefresh('/app/IndicatorsTest/change_signal_refresh', 2000)">Signal Refresh Interval 2 seconds</a><br>
-	<a href="javascript:changeRefresh('/app/IndicatorsTest/change_signal_refresh', 10000)">Signal Refresh Interval 10 seconds</a><br>
+	<a href="#" onclick="registerCallback('/app/IndicatorsTest/register_signal_callback')">Register Signal Callback (Async)</a><br>
+	<a href="#" onclick="registerCallback('/app/IndicatorsTest/signal_synchronous')">Register Signal Callback (Sync)</a><br>
+	<a href="#" onclick="registerCallback('/app/IndicatorsTest/deregister_signal_callback')">Stop Signal Callback</a><br>
+	<a href="#" onclick="showIcon('/app/IndicatorsTest/show_signal_icon', 10, 50, 'left', '#FF0000')">Show Signal Icon (Red, Left)</a><br>
+	<a href="#" onclick="showIcon('/app/IndicatorsTest/show_signal_icon', 20, 60, 'right', '#0000FF')">Show Signal Icon (Blue, Right)</a><br>
+	<a href="#" onclick="showIcon('/app/IndicatorsTest/show_signal_icon', 30, 70, 'up', '#00FF00')">Show Signal Icon (Green, Up)</a><br>
+	<a href="#" onclick="showIcon('/app/IndicatorsTest/show_signal_icon', 40, 80, 'down', '#000000')">Show Signal Icon (Black, Down)</a><br>
+	<a href="#" onclick="hideIcon('/app/IndicatorsTest/hide_signal_icon')">Hide Signal Icon</a><br>
+	<a href="#" onclick="changeRefresh('/app/IndicatorsTest/change_signal_refresh', 2000)">Signal Refresh Interval 2 seconds</a><br>
+	<a href="#" onclick="changeRefresh('/app/IndicatorsTest/change_signal_refresh', 10000)">Signal Refresh Interval 10 seconds</a><br>
 	<H2>Battery (Ruby Access)</H2>
-	<a href="javascript:registerCallback('/app/IndicatorsTest/register_battery_callback', 'periodic', '5000')">Register Battery Callback (Async, Periodic)</a><br>
-	<a href="javascript:registerCallback('/app/IndicatorsTest/register_battery_callback', 'system', '')">Register Battery Callback (Async, System Events)</a><br>
-	<a href="javascript:registerCallback('/app/IndicatorsTest/battery_synchronous')">Register Battery Callback (Sync)</a><br>
-	<a href="javascript:registerCallback('/app/IndicatorsTest/deregister_battery_callback')">Stop Battery Callback</a><br>
-	<a href="javascript:showIcon('/app/IndicatorsTest/show_battery_icon', 50, 50, 'left', '#FF0000')">Show Battery Icon (Red, Left)</a><br>
-	<a href="javascript:showIcon('/app/IndicatorsTest/show_battery_icon', 60, 60, 'right', '#0000FF')">Show Battery Icon (Blue, Right)</a><br>
-	<a href="javascript:showIcon('/app/IndicatorsTest/show_battery_icon', 70, 70, 'up', '#00FF00')">Show Battery Icon (Green, Up)</a><br>
-	<a href="javascript:showIcon('/app/IndicatorsTest/show_battery_icon', 80, 80, 'down', '#000000')">Show Battery Icon (Black, Down)</a><br>
-	<a href="javascript:hideIcon('/app/IndicatorsTest/hide_battery_icon')">Hide Battery Icon</a><br>
-	<a href="javascript:changeRefresh('/app/IndicatorsTest/change_battery_refresh', 2000)">Battery Refresh Interval 2 seconds</a><br>
-	<a href="javascript:changeRefresh('/app/IndicatorsTest/change_battery_refresh', 10000)">Battery Refresh Interval 10 seconds</a><br>
-	<a href="javascript:smartBattery('/app/IndicatorsTest/get_smartbattery', 10000)">Get SmartBattery</a><br>
+	<a href="#" onclick="registerCallback('/app/IndicatorsTest/register_battery_callback', 'periodic', '5000')">Register Battery Callback (Async, Periodic)</a><br>
+	<a href="#" onclick="registerCallback('/app/IndicatorsTest/register_battery_callback', 'system', '')">Register Battery Callback (Async, System Events)</a><br>
+	<a href="#" onclick="registerCallback('/app/IndicatorsTest/battery_synchronous')">Register Battery Callback (Sync)</a><br>
+	<a href="#" onclick="registerCallback('/app/IndicatorsTest/deregister_battery_callback')">Stop Battery Callback</a><br>
+	<a href="#" onclick="showIcon('/app/IndicatorsTest/show_battery_icon', 50, 50, 'left', '#FF0000')">Show Battery Icon (Red, Left)</a><br>
+	<a href="#" onclick="showIcon('/app/IndicatorsTest/show_battery_icon', 60, 60, 'right', '#0000FF')">Show Battery Icon (Blue, Right)</a><br>
+	<a href="#" onclick="showIcon('/app/IndicatorsTest/show_battery_icon', 70, 70, 'up', '#00FF00')">Show Battery Icon (Green, Up)</a><br>
+	<a href="#" onclick="showIcon('/app/IndicatorsTest/show_battery_icon', 80, 80, 'down', '#000000')">Show Battery Icon (Black, Down)</a><br>
+	<a href="#" onclick="hideIcon('/app/IndicatorsTest/hide_battery_icon')">Hide Battery Icon</a><br>
+	<a href="#" onclick="changeRefresh('/app/IndicatorsTest/change_battery_refresh', 2000)">Battery Refresh Interval 2 seconds</a><br>
+	<a href="#" onclick="changeRefresh('/app/IndicatorsTest/change_battery_refresh', 10000)">Battery Refresh Interval 10 seconds</a><br>
+	<a href="#" onclick="smartBattery('/app/IndicatorsTest/get_smartbattery', 10000)">Get SmartBattery</a><br>
 	<P>
 		
 
