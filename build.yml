@@ -4,6 +4,9 @@ paths:
   extensions:
    - C:/Neon/git/rhodes/lib/commonAPI
    - C:/Neon/git/Motorola-Extensions/lib/commonAPI
+#Win8
+   - C:/git/rhodes/lib/commonAPI
+   - C:/git/Motorola-Extensions/lib/commonAPI
 #   - C:/Neon/ClearCase/jrq768_Neon_Main/vobs/NEON/R2D1/RhoElementsOneExtension/extensions/
    - B:/git/rhodes/lib/commonAPI
    - B:/git/Motorola-Extensions/lib/commonAPI
@@ -34,7 +37,9 @@ wm:
 #sdk: "MC3000c50b (ARMV4I)"   
   sdk: "Windows Mobile 6.5.3 Professional DTK (ARMV4I)"
   
-extensions: ["json", "barcode", "coreapi", "indicators", "hardware_keys"]
+#extensions: ["json", "barcode", "coreapi", "indicators", "hardware_keys"]
+#extensions: ["json", "barcode", "coreapi", "indicators", "hardware_keys"]
+extensions: ["json", "barcode", "coreapi", "indicators"]
 #extensions: ["json"]
 capabilities:
 #- motorola
