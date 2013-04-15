@@ -1,0 +1,214 @@
+<HTML>
+<head>
+<script type="text/javascript" charset="utf-8" src="/public/js/application.js"></script>
+<script src="/public/jquery/jquery-1.6.4.min.js" type="text/javascript"></script>
+<script>
+function loadPage()
+{
+	enumerateCameras();
+}
+
+function getMaxDimensions()
+{
+	var message;
+	var returnedValue = "umbrella";	//  Function is asynchronous so this should not be returned
+	jQuery.ajax({
+         url:    '/app/SystemTest/get_maximum_width',
+		 data: {},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	message += "Maximum Width : " + returnedValue;
+	returnedValue = "umbrella";
+	jQuery.ajax({
+         url:    '/app/CameraTest/get_maximum_height',
+		 data: {},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+	message += " Maximum Height : " + returnedValue;
+	
+	messageOutput.innerHTML = message;
+}
+
+function setProperty(theProperty, theValue)
+{
+	jQuery.ajax({
+         url:    '/app/CameraTest/set_property',
+		 data: {chosenProperty:theProperty,chosenValue:theValue},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    });  
+}
+
+function enumerateCameras()
+{
+	$.get('/app/CameraTest/enumerateCameras', {});
+}
+
+function clearCameraEnumeration()
+{
+	camerasCombo.options.length = 0;
+}
+function addCameraToEnumeration(cameraName)
+{
+	camerasCombo.options[camerasCombo.options.length] = new Option(cameraName);
+}
+
+function setDefaultCamera()
+{
+	messageOutput.innerHTML = "Setting Default Camera: " + camerasCombo.options[camerasCombo.selectedIndex].value;
+	selectedCamera = camerasCombo.options[camerasCombo.selectedIndex].value;
+	$.get('/app/CameraTest/setDefaultCamera', {specifiedCamera:selectedCamera});
+}
+
+function takePicture()
+{
+	var theDesiredWidth = desiredWidth.options[desiredWidth.selectedIndex].value;
+	var theDesiredHeight = desiredHeight.options[desiredHeight.selectedIndex].value;
+	var theCompression = "";
+	var theOutputFormat = "";
+	var theFlash = "";
+	var theCaptureSound = "";
+	if (theForm.compressionFormat[0].checked)
+		theCompression = "jpg";
+	else if (theForm.compressionFormat[1].checked)
+		theCompression = "png";
+//	alert(theCompression);
+	if (theForm.outputFormat[0].checked)
+		theOutputFormat = "image";
+	else if (theForm.outputFormat[1].checked)
+		theOutputFormat = "dataUri";
+//	alert(theOutputFormat);
+	if (theForm.colorModel[0].checked)
+		theColorModel = "rgb";
+	else if (theForm.colorModel[1].checked)
+		theColorModel = "grayscale";
+//	alert(theColorModel);
+	if (theForm.flashMode[0].checked)
+		theFlash = "on";
+	else if (theForm.flashMode[1].checked)
+		theFlash = "off";
+	else if (theForm.flashMode[2].checked)
+		theFlash = "auto";
+	else if (theForm.flashMode[3].checked)
+		theFlash = "redEye";
+	else if (theForm.flashMode[4].checked)
+		theFlash = "torch";
+//	alert(theFlash);
+	theCaptureSound = theForm.txtCaptureSound.value;
+	
+	//  Take the picture with the hash of selected properties
+	jQuery.ajax({
+         url:    '/app/CameraTest/take_picture',
+		 data: {desiredWidth:theDesiredWidth,desiredHeight:theDesiredHeight,compressionFormat:theCompression,outputFormat:theOutputFormat,colorModel:theColorModel,flashMode:theFlash,captureSound:theCaptureSound},
+         success: function(result) 	{
+					returnedValue = result;
+                  },
+         async:   false
+    }); 
+}
+
+function specifyDesiredWidth()
+{
+	//alert(desiredWidth.options[desiredWidth.selectedIndex].value)
+	setProperty('desiredWidth', desiredWidth.options[desiredWidth.selectedIndex].value);
+}
+
+function specifyDesiredHeight()
+{
+	//alert(desiredHeight.options[desiredHeight.selectedIndex].value)
+	setProperty('desiredHeight', desiredHeight.options[desiredHeight.selectedIndex].value);
+}
+
+function cameraCallback(status, imageUri, imageHeight, imageWidth, imageFormat, message)
+{
+	var message = "Camera Status: " + status + "<br>";
+	message += "URI: " + imageUri + "<br>";
+	message += "Height: " + imageHeight + "<br>";
+	message += "Width: " + imageWidth + "<br>";
+	message += "Format: " + imageFormat + "<br>";
+	message += "Message: " + message + "<br>";
+	messageOutput.innerHTML = message;
+	//  If Data URI is selected then show the image on the page
+	if (theForm.outputFormat[1].checked)
+	{
+		imageAsDataURI.src = imageUri;
+	}
+}
+
+
+</SCRIPT>
+</head>
+<body onload="loadPage()">
+<div data-role="page">
+
+  <h1>Camera Test Page</h1>
+	<P>
+	<div id='messageOutput'>Camera Output Goes Here</div>
+	<div id='photo'>Photo or Photo details go here</div>
+	<img src="" id="imageAsDataURI"></img><br>
+	<P>
+	<form id="theForm">
+	Desired Image Dimensions: Width
+	[<select id="desiredWidth" onchange="specifyDesiredWidth();">
+		<option>7680</option>
+		<option>4096</option>
+		<option>2048</option>
+		<option>1920</option>
+		<option>1440</option>
+		<option>720</option>
+		<option>350</option>
+	</select>]
+	  Height
+	[<select id="desiredHeight" onchange="specifyDesiredHeight();">
+		<option>4320</option>
+		<option>2160</option>
+		<option>1080</option>
+		<option>1080</option>
+		<option>1080</option>
+		<option>480</option>
+		<option>200</option>
+	</select>]<br>
+	
+	Compression Format: <input type="radio" name="compressionFormat" value="jpg" onclick="setProperty('compressionFormat', 'jpg');" checked> JPG</input>
+	<input type="radio" name="compressionFormat" value="png" onclick="setProperty('compressionFormat', 'PNg');"> PNG</input><br>
+
+	Output Format: <input type="radio" name="outputFormat" onclick="setProperty('outputFormat', 'image');" checked> Image</input>
+	<input type="radio" name="outputFormat" onclick="setProperty('outputFormat', 'dataUri');"> dataURI</input><br>
+	
+	Colour Model: <input type="radio" name="colorModel" onclick="setProperty('colorModel', 'rgb');" checked> RGB</input>
+	<input type="radio" name="colorModel" onclick="setProperty('colorModel', 'grayscale');"> Grayscale</input><br>
+	
+	Flash Mode: <input type="radio" name="flashMode" onclick="setProperty('flashMode', 'on');" checked> On</input>
+	<input type="radio" name="flashMode" onclick="setProperty('flashMode', 'off');"> Off</input>
+	<input type="radio" name="flashMode" onclick="setProperty('flashMode', 'auto');"> Auto</input>
+	<input type="radio" name="flashMode" onclick="setProperty('flashMode', 'redEye');"> Red Eye</input>
+	<input type="radio" name="flashMode" onclick="setProperty('flashMode', 'torch');"> Torch</input><br>
+	
+	Capture Sound: <INPUT TYPE="text" size="27" value="file://\???" id="txtCaptureSound"/>
+	
+	<P>
+	<B>Working with Multiple Cameras:</b><br>
+	<INPUT align="center" type="button" value="Enumerate Cameras" onclick="enumerateCameras();">
+	<INPUT align="center" type="button" value="Choose this Camera -->" onclick="setDefaultCamera();">
+	<P>
+	
+	<INPUT align="center" type="button" value="Take Picture" onclick="takePicture();">
+	<INPUT align="center" type="button" value="Choose Picture from Album" onclick="choosePictureFromAlbum();">
+	<INPUT align="center" type="button" value="Get Max Height / Width" onclick="getMaxDimensions();"><br>
+	</form>
+	<br>
+	<b>This test page does not test preview props, saveImageToDeviceGallery, saveToSharedGallery or enableEditing</b>
+
+	<P>
+
+</div>
+</body>
+</html>
