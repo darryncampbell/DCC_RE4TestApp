@@ -1,0 +1,12 @@
+entry: Init_Camera_extension	
+javaentry: com.camera.Camera
+libraries: ["Camera"]
+android:
+  source_list: ext/platform/android/ext_java.files
+
+project_paths:
+  wp8: ext/platform/wp8/Camera.vcxproj
+  wm: ext/platform/wm/Camera.vcproj
+  win32: ext/platform/wm/Camera.vcproj
+  
+xml_api_paths: ext/Camera.xml
