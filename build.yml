@@ -39,8 +39,9 @@ wm:
   
   
 #extensions: ["json", "barcode", "coreapi", "indicators", "hardware_keys"]
-#extensions: ["json", "barcode", "coreapi", "indicators", "hardware_keys"]
-extensions: ["json", "barcode", "coreapi", "indicators", "mediacapture"]
+extensions: ["json", "barcode", "coreapi", "indicators", "hardware_keys"]
+#extensions: ["json", "barcode", "coreapi", "indicators", "mediacapture"]
+#extensions: ["json", "barcode", "coreapi"]
 #extensions: ["json"]
 capabilities:
 #- motorola

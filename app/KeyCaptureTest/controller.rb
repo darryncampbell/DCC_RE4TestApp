@@ -53,7 +53,7 @@ class KeyCaptureTestController < Rho::RhoController
 
   def remapKeys
 	puts "Remapping key from : #{@params['srcKey']} to #{@params['destKey']}"
-	Rho::KeyCapture.remapKey(@params['srcKey'],@params['destKeyKey'])
+	Rho::KeyCapture.remapKey(@params['srcKey'],@params['destKey'])
 	WebView.execute_js("outputToPage('messages', 'Remapping key from : #{@params['srcKey']} to #{@params['destKey']}');")
   end
   
