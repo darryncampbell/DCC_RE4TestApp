@@ -1,8 +1,11 @@
 # startup page for your application
 #start_path = '/app/BarcodeTest'
-#start_path = '/app/NetworkTest'
+start_path = '/app/NetworkTest'
 #start_path = '/app/SystemTest'
-start_path = '/app'
+#start_path = '/app'
+#start_path = '/app/simple.htm'
+#start_path = 'file:///simple.htm'
+#start_path = '/app/IndicatorsTest/indicatorsTest.htm'
 
 # path to the options page (in this case handled by javascript)
 options_path = '/app/Settings'
