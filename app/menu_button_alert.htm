@@ -1,0 +1,52 @@
+<HTML><HEAD>
+<META HTTP-Equiv="Network" Content="WANStatusEvent:url('javascript:fnWANStatus(%json);')">
+<meta http-equiv="Network" content="NetworkEvent:url('Javascript:onNetworkEvent(%json);')">
+<meta http-equiv="Network" content="networkPollInterval:5000;connectionTimeout:1500">
+<meta http-equiv="Network" content="Host:url('http://www.motorola.com')">
+  <script type="text/javascript">
+  var count = 0;
+  function onNetworkEvent(jsonObject)
+  {
+    count = count + 1;
+    var html = "<b>Network Event Returned:</b> ";
+    html += jsonObject.connectionInformation + " - " + count;
+    networkOutput.innerHTML=html;
+  }
+  function fnWANStatus(jsonObject)
+  {
+    var html = "Signal Strength: " + jsonObject.phoneSignalStrength + "%";
+    html += "<BR> Operator: " + jsonObject.networkOperator;
+    html += "<BR> Cell Connection Available: " + jsonObject.connectionTypeAvailable;
+    html += "<BR> Cell Connection Connected?: " + jsonObject.connectionTypeConnected;
+    html += "<BR> Connection Manager Message: " + jsonObject.connectionManagerMessage;
+    outputDiv.innerHTML = html;
+  }
+  function fnConnect(destination)
+  {
+    alert('calling network.connectWAN( ' + destination + ' )');
+    network.connectWan = "" + destination;
+  }
+  function fnDisconnect()
+  {
+    network.disconnectWan();
+  }
+  function fnStartNetworkCheck()
+  {
+    network.start();
+  }
+  function fnStopNetworkCheck()
+  {
+    network.stop();
+    networkOutput.innerHTML = "Not Polling Network";
+  }
+  </script>
+</HEAD>
+<H1>WAN Tests</H1>
+<P><div id="networkOutput">Network Connection Information goes Here</div><br>
+<b><div id="outputDiv">Network Check Started</div></b><P>
+<input type="button" onclick="fnConnect('Internet')" Value="Connect (Default)" />
+<input type="button" onclick="fnConnect('My Connection')" Value="Connect ('My Connection')" />
+<input type="button" onclick="fnDisconnect()" Value="Disconnect" />
+<input type="button" onclick="fnStartNetworkCheck()" Value="Start Network Checking" />
+<input type="button" onclick="fnStopNetworkCheck()" Value="Stop Network Checking" />
+</BODY></HTML>
