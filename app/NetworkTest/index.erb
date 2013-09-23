@@ -47,8 +47,15 @@ function doAJAXWM(rubyFunc)
 }
 function doAJAXWAN(rubyFunc)
 {
-	$.get(rubyFunc, {connectionDestination:'Internet', dccParams:{}})
+	$.get(rubyFunc, {connectionDestination:'orangeinternet', dccParams:{}})
 }
+function genLog()
+{
+	alert('gen Log');
+	generic.Log('Hello Darryn, I think you are a swell guy', 1);
+	alert('end gen log');
+}
+
 </script>
 <div data-role="page">
 
@@ -80,6 +87,7 @@ function doAJAXWAN(rubyFunc)
 		<a href="javascript:doAJAXWAN('/app/NetworkTest/disconnectWAN')">Disconnect from WAN</a><br>
 		<a href="http://www.google.co.uk">Google.co.uk</a>
 		<a href="/app/menu_button_alert.htm">Sudhakar's Page</a>
+		<a href="javascript:genLog()">Generic Log</a>
 	</ul>
   </div>
 
